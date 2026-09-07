@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>慶勳 ＆ 婷蔓｜婚禮邀請</title>
+
+<!--
+  ============================================================
+  編輯指南（此區塊不會顯示在網頁上）
+  ============================================================
+  1. 照片：搜尋 class="photo-slot" 的區塊（封面圓形照、婚紗照輪播3張、
+     影片封面），目前為線條示意圖，請換成 <img src="您的照片.jpg"> 或
+     修改其 background 樣式。
+  2. RSVP 表單連結：搜尋 forms.gle/example1234，換成您正式的
+     Google 表單網址。
+  3. 頁尾喜帖圖片／下載連結：目前使用 invitation-card.png
+    （已放在同一個資料夾），下載連結也指向同一張圖；
+     若您要提供 PDF 或其他檔案下載，請把兩處的 invitation-card.png
+     換成該檔案的網址或檔名。
+  4. 交通方式文字為一般性建議，請依飯店提供的實際資訊確認後修改。
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+TC:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:        #F6F2E9;
+    --cream-deep:   #EDE6D8;
+    --line:         #DCD3C1;
+    --ink:          #3A362F;
+    --ink-soft:     #83795F;
+    --ink-faint:    #A79E88;
+    --gold:         #A6844F;
+    --gold-soft:    #C9AD7E;
+    --white:        #FFFFFF;
+
+    --serif-cn: 'Noto Serif TC', serif;
+    --serif-en: 'Cormorant Garamond', serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--cream-deep);
+    color: var(--ink);
+    font-family: var(--serif-cn);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page{
+    max-width: 460px;
+    margin: 0 auto;
+    background: var(--cream);
+    position: relative;
+    box-shadow: 0 0 60px rgba(58,54,47,0.08);
+    overflow: hidden;
+  }
+
+  section{
+    padding: 76px 34px;
+    position: relative;
+  }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 14px;
+    padding: 0 34px;
+  }
+  .divider::before,
+  .divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: var(--line);
+  }
+  .divider .mark{
+    width:6px; height:6px;
+    border-radius:50%;
+    border:1px solid var(--gold-soft);
+  }
+
+  /* ---------- 共用文字樣式 ---------- */
+  .eyebrow{
+    font-family: var(--serif-en);
+    font-size: 26px;
+    letter-spacing: 0.32em;
+    color: var(--ink-soft);
+    font-weight: 500;
+    text-align:center;
+  }
+  .eyebrow-subtitle{
+    font-family: var(--serif-en);
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    color: var(--ink-soft);
+    font-weight: 500;
+    text-align:center;
+  }
+  .section-title{
+    font-family: var(--serif-cn);
+    font-size: 24px !important;
+    font-weight: bolder;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    text-align:center;
+  }
+  .section-title .en{
+    display:block;
+    font-family: var(--serif-en);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: var(--ink);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ---------- Photo placeholder（照片預留位） ---------- */
+  .photo-slot{
+    position: relative;
+    background:
+      radial-gradient(120% 140% at 50% 20%, #FBF8F1 0%, #EFE7D6 60%, #E5DAC3 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--gold);
+  }
+  .photo-slot::after{
+    content: attr(data-label);
+    position:absolute;
+    bottom: 14px;
+    left:0; right:0;
+    text-align:center;
+    font-family: var(--serif-en);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--ink-faint);
+    opacity: 0.75;
+  }
+  .photo-slot svg{ width: 34%; height: 34%; opacity: 0.55; }
+
+  /* =========================================================
+     1. 封面
+     ========================================================= */
+  .cover{
+    padding-top: 64px;
+    text-align: center;
+  }
+  .cover .frame{
+    width: 250px;
+    height: 330px;
+    margin: 34px auto 0;
+    border-radius: 125px 125px 0 0;
+    padding: 10px;
+    border: 1px solid var(--gold-soft);
+    animation: fadeIn 1.4s ease both;
+  }
+  .cover .frame-inner{
+    width:100%; height:100%;
+    border-radius: 115px 115px 0 0;
+    border: 1px solid var(--line);
+    overflow:hidden;
+  }
+  .cover .frame-inner img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    object-position: top center;
+    display:block;
+  }
+  @keyframes fadeIn{
+    from{ opacity:0; transform: scale(0.97); }
+    to{ opacity:1; transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .cover .frame{ animation: none; }
+  }
+
+  .cover .names{
+    margin-top: 40px;
+    font-size: 34px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+  }
+  .cover .names .amp{
+    color: var(--gold);
+    font-family: var(--serif-en);
+    font-style: italic;
+    padding: 0 10px;
+  }
+  .cover .date{
+    margin-top: 14px;
+    font-family: var(--serif-en);
+    font-size: 24px;
+    letter-spacing: 0.4em;
+    color: var(--ink-soft);
+  }
+  .cover .invite-text{
+    margin-top: 40px;
+    font-size: 14.5px;
+    line-height: 2.15;
+    color: var(--ink-soft);
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+
+  /* =========================================================
+     2. 新人與父母
+     ========================================================= */
+  .family-grid{
+    display:flex;
+    margin-top: 40px;
+  }
+  .family-col{
+    flex:1;
+    text-align:center;
+    padding: 0 12px;
+  }
+  .family-col + .family-col{
+    border-left: 1px solid var(--line);
+  }
+  .family-role{
+    font-family: var(--serif-en);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--ink-faint);
+  }
+  .family-name{
+    margin-top: 14px;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .family-parents{
+    margin-top: 24px;
+    font-size: 13.5px;
+    line-height: 2.4;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+  .family-parents span{
+    display:block;
+  }
+
+  /* =========================================================
+     3. 婚禮資訊
+     ========================================================= */
+  .schedule-icon{
+    display:flex;
+    justify-content:center;
+    margin-bottom: 36px;
+  }
+  .schedule-icon svg{ width: 46px; height:46px; }
+
+  .schedule-row{
+    display:flex;
+    align-items:stretch;
+  }
+  .schedule-date{
+    flex: 0 0 auto;
+    padding-right: 15%;
+    padding-left: 10%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    border-right: 1px solid var(--line);
+    text-align:right;
+  }
+  .schedule-date .y{
+    font-family: var(--serif-en);
+    font-size: 30px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+  }
+  .schedule-date .md{
+    margin-top: 4px;
+    font-family: var(--serif-en);
+    font-size: 30px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+  }
+  .schedule-events{
+    flex:1;
+    padding-left: 15%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap: 20px;
+  }
+  .schedule-events .item .time{
+    font-family: var(--serif-en);
+    font-size: 16px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+  }
+  .schedule-events .item .label{
+    margin-top: 2px;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* =========================================================
+     4. 日曆
+     ========================================================= */
+  .calendar{
+    max-width: 320px;
+    margin: 36px auto 0;
+  }
+  .calendar table{
+    width:100%;
+    border-collapse: collapse;
+  }
+  .calendar th{
+    font-family: var(--serif-en);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--ink-faint);
+    padding-bottom: 14px;
+  }
+  .calendar td{
+    text-align:center;
+    padding: 9px 0;
+    font-family: var(--serif-en);
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .calendar td.marked{
+    position:relative;
+    color: var(--white);
+    font-weight: 600;
+  }
+  .calendar td.marked span{
+    position:relative;
+    z-index:1;
+  }
+  .calendar td.marked::before{
+    content:"";
+    position:absolute;
+    left:50%; top:50%;
+    width:30px; height:30px;
+    transform: translate(-50%,-50%);
+    border-radius:50%;
+    background: var(--gold);
+  }
+  .calendar-caption{
+    text-align:center;
+    margin-top: 30px;
+  }
+  .calendar-caption .d{
+    font-family: var(--serif-en);
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+  }
+  .calendar-caption p{
+    margin-top: 10px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  /* =========================================================
+     5. 婚紗照輪播
+     ========================================================= */
+  .gallery{ padding-left: 0; padding-right: 0; }
+  .gallery .section-title{ padding: 0 34px; margin-bottom: 30px; }
+  .gallery-track{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding: 0 34px 6px;
+    scrollbar-width: none;
+  }
+  .gallery-track::-webkit-scrollbar{ display:none; }
+  .gallery-track .photo-slot{
+    flex: 0 0 84%;
+    aspect-ratio: 4/5;
+    scroll-snap-align: center;
+    border-radius: 2px;
+  }
+  .gallery-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 18px;
+    margin-top: 22px;
+  }
+  .gallery-nav .arrow{
+    width: 28px; height: 28px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    background:none;
+    color: var(--ink-soft);
+    flex-shrink:0;
+  }
+  .gallery-nav .arrow svg{ width:11px; height:11px; }
+  .gallery-dots{ display:flex; gap:7px; }
+  .gallery-dots .dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background: var(--line);
+    transition: background .25s ease;
+  }
+  .gallery-dots .dot.active{ background: var(--gold); }
+  .gallery-count{
+    font-family: var(--serif-en);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-faint);
+    min-width: 30px;
+    text-align:center;
+  }
+
+  /* =========================================================
+     6. 婚禮影片
+     ========================================================= */
+  .video-frame{
+    position:relative;
+    margin-top: 34px;
+    aspect-ratio: 16/10;
+    border-radius: 2px;
+    overflow:hidden;
+  }
+  .video-play{
+    position:absolute;
+    left:50%; top:50%;
+    transform: translate(-50%,-50%);
+    width: 58px; height:58px;
+    border-radius:50%;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid var(--gold-soft);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .video-play svg{ width:16px; height:16px; margin-left:2px; }
+  .video-progress{
+    margin-top: 18px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .video-progress .bar{
+    flex:1;
+    height:2px;
+    background: var(--line);
+    position:relative;
+  }
+  .video-progress .bar::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width: 28%;
+    background: var(--gold);
+  }
+  .video-progress .bar::after{
+    content:"";
+    position:absolute;
+    left:28%; top:50%;
+    width:8px; height:8px;
+    border-radius:50%;
+    background: var(--gold);
+    transform: translate(-50%,-50%);
+  }
+  .video-progress .t{
+    font-family: var(--serif-en);
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+  }
+
+  /* =========================================================
+     7. 地圖
+     ========================================================= */
+  .map-frame{
+    margin-top: 34px;
+    border: 1px solid var(--line);
+    height: 260px;
+  }
+  .map-frame iframe{ width:100%; height:100%; border:0; filter: saturate(0.85) contrast(1.02); }
+  .venue{
+    margin-top: 28px;
+    text-align:center;
+  }
+  .venue-name{
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .venue-address{
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+  .venue-transport{
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    line-height: 2.1;
+    color: var(--ink-soft);
+    font-weight: 300;
+    text-align:left;
+  }
+  .venue-transport .k{
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  /* =========================================================
+     8. RSVP
+     ========================================================= */
+.rsvp{
+    position:relative;
+    text-align:center;
+    overflow:hidden;
+  }
+  .rsvp-bg{
+    position:absolute;
+    inset: 0;
+    z-index:0;
+    background-image: url(001.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.35;
+  }
+  .rsvp-content{
+    position:relative;
+    z-index:1;
+  }
+  .rsvp-content p{
+    margin-top: 18px;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight:300;
+    line-height: 1.9;
+  }
+  .rsvp-btn{
+    display:inline-block;
+    margin-top: 32px;
+    padding: 15px 46px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration:none;
+    font-family: var(--serif-en);
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    transition: background .2s ease, color .2s ease;
+    background: var(--cream);
+  }
+  .rsvp-btn:hover{ background: var(--gold); color:var(--white); }
+ 
+
+  /* =========================================================
+     9. 頁尾
+     ========================================================= */
+  footer{
+    text-align:center;
+    padding-bottom: 60px;
+  }
+  .flourish{
+    display:flex;
+    justify-content:center;
+    margin-bottom: 34px;
+  }
+  .flourish svg{ width:120px; height:24px; color: var(--gold-soft); }
+
+  .card-preview{
+    width: 80%;
+    margin: 50px auto 30px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 28px rgba(58,54,47,0.14);
+    background: var(--white);
+    padding: 6px;
+  }
+  .card-preview img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+
+  .download-link{
+    display:inline-block;
+    color: var(--gold);
+    text-decoration:none;
+    font-family: var(--serif-en);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .download-link:hover{ color: var(--ink); border-bottom-color: var(--ink); }
+
+  .footer-meta{
+    margin-top: 30px;
+    font-family: var(--serif-en);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+  }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ 1. 封面 & 標題 ============ -->
+  <section class="cover">
+    <p class="eyebrow">INVITATION</p>
+    <p class="eyebrow-subtitle">SAVE THE DATE</p>
+
+    <div class="frame">
+      <div class="frame-inner">
+        <img src="couple-illustration.png" alt="鍾慶勳與黃婷蔓的婚禮插畫">
+      </div>
+    </div>
+
+    <h1 class="names">鍾慶勳<span class="amp">&amp;</span>黃婷蔓</h1>
+    <p class="date">2027 | 1 | 2</p>
+
+    <p class="invite-text">
+      在人海中與你相遇，是我們此生最溫柔的緣分。<br>
+      謹訂於此佳期，共結連理，<br>
+      敬備喜宴，恭候您的光臨，與我們一同見證。
+    </p>
+  </section>
+
+  <div class="divider"><span class="mark"></span></div>
+
+  <!-- ============ 2. 新人與父母 ============ -->
+  <section class="family">
+    <p class="eyebrow">THE COUPLE</p>
+    <div class="family-grid">
+      <div class="family-col">
+        <p class="family-role">GROOM</p>
+        <p class="family-name">鍾慶勳</p>
+        <p class="family-parents">
+          <span>父　鍾金文</span>
+          <span>母　鄭素禎</span>
+        </p>
+      </div>
+      <div class="family-col">
+        <p class="family-role">BRIDE</p>
+        <p class="family-name">黃婷蔓</p>
+        <p class="family-parents">
+          <span>父　黃榮煥</span>
+          <span>母　黃水惠</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="mark"></span></div>
+
+  <!-- ============ 3. 婚禮資訊 ============ -->
+  <section class="schedule">
+    <!-- <div class="schedule-icon">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1" style="color:var(--gold)">
+        <circle cx="24" cy="24" r="15" />
+        <circle cx="24" cy="24" r="10.5" />
+        <path d="M24 4v6M24 38v6M4 24h6M38 24h6" stroke-width="0.8"/>
+      </svg>
+    </div> -->
+    <div class="schedule-row">
+      <div class="schedule-date">
+        <span class="y">2027</span>
+        <span class="md">01. 02</span>
+      </div>
+      <div class="schedule-events">
+        <div class="item">
+          <p class="time">18:00</p>
+          <p class="label">賓客入席</p>
+        </div>
+        <div class="item">
+          <p class="time">18:30</p>
+          <p class="label">婚禮晚宴</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="mark"></span></div>
+
+  <!-- ============ 4. 日曆 ============ -->
+  <section class="calendar-section">
+    <p class="section-title">好日子<span class="en">THE DATE</span></p>
+    <div class="calendar">
+      <table>
+        <thead>
+          <tr>
+            <th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td>1</td><td class="marked"><span>2</span></td>
+          </tr>
+          <tr>
+            <td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td>
+          </tr>
+          <tr>
+            <td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
+          </tr>
+          <tr>
+            <td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
+          </tr>
+          <tr>
+            <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
+          </tr>
+          <tr>
+            <td>31</td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="calendar-caption">
+      <p class="d">2027 . 01 . 02（六）</p>
+      <p>願所有美好，如期而至。</p>
+    </div>
+  </section>
+
+  <div class="divider"><span class="mark"></span></div>
+
+  <!-- ============ 5. 婚紗照輪播 ============ -->
+  <section class="gallery">
+    <p class="section-title">婚紗記憶<span class="en">OUR MOMENTS</span></p>
+    <div class="gallery-track" id="galleryTrack">
+      <div class="photo-slot" data-label="PHOTO 01">
+        <!-- <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg> -->
+        <img src="001.jpg" width="100%" alt="">
+      </div>
+      <div class="photo-slot" data-label="PHOTO 02">
+        <img src="002.jpg" width="100%" alt="">
+        <!-- <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg> -->
+      </div>
+      <div class="photo-slot" data-label="PHOTO 03">
+        <img src="003.jpg" width="100%" alt="">
+        <!-- <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg> -->
+      </div>
+      <div class="photo-slot" data-label="PHOTO 03">
+        <!-- <img src="004.jpg" width="100%" alt=""> -->
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg>
+      </div>
+    </div>
+    <div class="gallery-nav">
+      <button class="arrow" id="galleryPrev" aria-label="上一張">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="gallery-count"><span id="galleryCurrent">1</span>/3</span>
+      <div class="gallery-dots" id="galleryDots">
+        <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <button class="arrow" id="galleryNext" aria-label="下一張">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <div class="divider"><span class="mark"></span></div>
+
+  <!-- ============ 6. 婚禮影片 ============ -->
+  <!-- <section class="video-section">
+    <p class="section-title">婚禮側錄<span class="en">THE FILM</span></p>
+    <div class="video-frame">
+      <div class="photo-slot" style="width:100%;height:100%;" data-label="WEDDING FILM">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1"><rect x="8" y="14" width="48" height="34" rx="1"/><path d="M8 22h48" stroke-width="0.6"/></svg>
+      </div>
+      <div class="video-play">
+        <svg viewBox="0 0 24 24" fill="var(--gold)"><path d="M6 4l14 8-14 8V4z"/></svg>
+      </div>
+    </div>
+    <div class="video-progress">
+      <span class="t">00:42</span>
+      <div class="bar"></div>
+      <span class="t">03:10</span>
+    </div>
+  </section>
+
+  <div class="divider"><span class="mark"></span></div> -->
+
+  <!-- ============ 7. 地圖 & 交通 ============ -->
+  <section class="map-section">
+    <p class="section-title">地圖<span class="en">LOCATION</span></p>
+    <div class="map-frame">
+      <iframe
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://maps.google.com/maps?q=%E8%8B%97%E6%A0%97%E7%B8%A3%E7%AB%B9%E5%8D%97%E9%8E%AE%E6%96%B0%E5%8D%97%E9%87%8C%E5%85%AC%E5%9C%92%E8%B7%AF106%E8%99%9F&output=embed">
+      </iframe>
+    </div>
+    <div class="venue">
+      <p class="venue-name">苗栗馥藝金鬱金香酒店 | 名爵B廳</p>
+      <p class="venue-address">苗栗縣竹南鎮新南里公園路106號</p>
+    </div>
+    <div class="venue-transport">
+      <p><span class="k">自行開車　</span>國道1號竹南交流道下，往竹南市區方向約10分鐘車程，飯店備有停車場。</p>
+      <p><span class="k">大眾運輸　</span>搭乘台鐵至竹南車站，轉乘計程車約10分鐘可抵達。</p>
+    </div>
+  </section>
+
+  <!-- <div class="divider"><span class="mark"></span></div> -->
+
+  <!-- ============ 8. RSVP ============ -->
+   <section class="rsvp">
+    <div class="rsvp-bg"></div>
+    <div class="rsvp-content">
+      <p class="section-title">RSVP<span class="en">出席回覆</span></p>
+      <p>敬請於 2026 年 12 月 1 日前，<br>撥冗填寫以下表單，回覆您的出席意願。</p>
+      <a class="rsvp-btn" href="https://forms.gle/example1234" target="_blank" rel="noopener">填寫回覆表單</a>
+    </div>
+  </section>
+
+  <!-- ============ 9. 頁尾 ============ -->
+  <footer>
+    <div class="divider" style="margin-top: 50px;"><span class="mark"></span></div>
+
+    <div class="card-preview">
+      <img src="invitation-card.png" alt="鍾慶勳與黃婷蔓的電子喜帖">
+    </div>
+
+    <a class="download-link" href="invitation-card.png" download>下載電子喜帖</a>
+
+    <p class="footer-meta">CHUNG CHING-HSUN &amp; HUANG TING-MAN　·　2027.01.02</p>
+  </footer>
+
+</div>
+
+<script>
+  // ---- 婚紗照輪播：拖曳/滑動同步點點與計數 ----
+  (function(){
+    const track = document.getElementById('galleryTrack');
+    const slides = track.querySelectorAll('.photo-slot');
+    const dots = document.querySelectorAll('#galleryDots .dot');
+    const currentEl = document.getElementById('galleryCurrent');
+    const prevBtn = document.getElementById('galleryPrev');
+    const nextBtn = document.getElementById('galleryNext');
+    let index = 0;
+
+    function update(i){
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      dots.forEach((d, n) => d.classList.toggle('active', n === index));
+      currentEl.textContent = index + 1;
+    }
+
+    function scrollTo(i){
+      const slide = slides[i];
+      if (slide) track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+    }
+
+    prevBtn.addEventListener('click', () => { update(index - 1); scrollTo(index); });
+    nextBtn.addEventListener('click', () => { update(index + 1); scrollTo(index); });
+
+    let ticking = false;
+    track.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        let closest = 0, min = Infinity;
+        slides.forEach((s, n) => {
+          const d = Math.abs(s.offsetLeft - track.offsetLeft - track.scrollLeft);
+          if (d < min){ min = d; closest = n; }
+        });
+        update(closest);
+        ticking = false;
+      });
+    });
+  })();
+</script>
+</body>
+</html>
