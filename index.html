@@ -11,7 +11,7 @@
 <meta property="og:url" content="https://mouseclaw.github.io/wedding-web/">
 <meta property="og:title" content="鍾慶勳 & 黃婷蔓 的婚禮邀請函">
 <meta property="og:description" content="誠摯邀請您參加我們的婚禮！時間：2027年1月2日（六），地點：苗栗馥藝金鬱金香酒店。">
-<meta property="og:image" content="img/032.jpg">
+<meta property="og:image" content="https://mouseclaw.github.io/img/032.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
@@ -20,7 +20,7 @@
 <meta name="twitter:url" content="https://mouseclaw.github.io/wedding-web/">
 <meta name="twitter:title" content="鍾慶勳 & 黃婷蔓 的婚禮邀請函">
 <meta name="twitter:description" content="誠摯邀請您參加我們的婚禮！時間：2027年1月2日（六），地點：苗栗馥藝金鬱金香酒店。">
-<meta name="twitter:image" content="img/032.jpg">
+<meta name="twitter:image" content="https://mouseclaw.github.io/img/032.jpg">
 
 <!--
   ============================================================
@@ -633,7 +633,79 @@
     letter-spacing: 0.2em;
     color: var(--ink-faint);
   }
-  .music-btn {
+  /* 音樂提示遮罩層 */
+.music-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* 提示卡片 */
+.music-prompt-box {
+  background: #ffffff;
+  padding: 32px 24px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 320px;
+  width: 85%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.prompt-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  animation: bounce 2s infinite;
+}
+
+.prompt-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.prompt-desc {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* 提示框內的按鈕 */
+.prompt-btn {
+  background: #d4a373; /* 可依你的喜帖主色調調整 */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.prompt-btn:active {
+  background: #bc6c25;
+}
+
+/* 淡出隱藏用的 Class */
+.music-prompt-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 右上角音樂按鈕樣式 */
+.music-btn {
   position: fixed;
   top: 20px;
   right: 20px;
@@ -653,11 +725,6 @@
   transition: transform 0.2s, background 0.2s;
 }
 
-.music-btn:active {
-  transform: scale(0.92);
-}
-
-/* 播放時音樂圖示緩慢旋轉 */
 .music-btn.playing #music-icon {
   display: inline-block;
   animation: spin 4s linear infinite;
@@ -668,19 +735,35 @@
   to { transform: rotate(360deg); }
 }
 
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  60% { transform: translateY(-4px); }
+}
+
 </style>
 </head>
 <body>
 <div class="page">
-  <!-- 音樂控制按鈕 -->
-  <button id="music-toggle" class="music-btn" aria-label="切換背景音樂">
-    <span id="music-icon">🎵</span>
-  </button>
+<!-- 音樂播放提示遮罩 -->
+<div id="music-prompt" class="music-prompt-overlay">
+  <div class="music-prompt-box">
+    <div class="prompt-icon">🎵</div>
+    <p class="prompt-title">鍾慶勳 & 黃婷蔓 的婚禮邀請函</p>
+    <p class="prompt-desc">點擊下方按鈕或畫面任意處，開啟浪漫音樂</p>
+    <button id="start-music-btn" class="prompt-btn">開啟音樂並進入婚禮邀請函</button>
+  </div>
+</div>
 
-  <!-- 背景音樂元件 (請將 bgm.mp3 替換成你的音樂檔案路徑) -->
-  <audio id="bg-music" loop preload="auto">
-    <source src="bgm.mp3" type="audio/mpeg">
-  </audio>
+<!-- 右上角音樂控制按鈕 -->
+<button id="music-toggle" class="music-btn" aria-label="切換背景音樂" style="display: none;">
+  <span id="music-icon">🎵</span>
+</button>
+
+<!-- 背景音樂元件 -->
+<audio id="bg-music" loop preload="auto">
+  <source src="bgm.mp3" type="audio/mpeg">
+</audio>
   <!-- ============ 1. 封面 & 標題 ============ -->
   <section class="cover">
     <p class="eyebrow">INVITATION</p>
@@ -888,15 +971,38 @@
 
 <script>
 const music = document.getElementById('bg-music');
+const musicPrompt = document.getElementById('music-prompt');
+const startBtn = document.getElementById('start-music-btn');
 const musicBtn = document.getElementById('music-toggle');
 
-// 點擊按鈕切換播放 / 暫停
-musicBtn.addEventListener('click', (e) => {
-  e.stopPropagation(); // 避免觸發全域點擊事件
-  toggleMusic();
+// 點擊提示框內的按鈕或任意地方時啟動音樂並關閉遮罩
+function handleUserFirstClick() {
+  music.play().then(() => {
+    musicBtn.classList.add('playing');
+  }).catch((err) => {
+    console.log("播放失敗：", err);
+  });
+
+  // 淡出並隱藏提示框，顯示右上角音樂控制按鈕
+  musicPrompt.classList.add('fade-out');
+  musicBtn.style.display = 'flex';
+
+  // 移除全域監聽
+  document.removeEventListener('click', handleUserFirstClick);
+}
+
+// 綁定按鈕點擊
+startBtn.addEventListener('click', (e) => {
+  e.stopPropagation(); // 避免重複觸發
+  handleUserFirstClick();
 });
 
-function toggleMusic() {
+// 綁定整頁任意點擊（增加便利性）
+document.addEventListener('click', handleUserFirstClick);
+
+// 右上角音樂按鈕點擊：切換播放/暫停
+musicBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
   if (music.paused) {
     music.play();
     musicBtn.classList.add('playing');
@@ -904,19 +1010,7 @@ function toggleMusic() {
     music.pause();
     musicBtn.classList.remove('playing');
   }
-}
-
-// 首次點擊頁面任意區域時嘗試播放音樂（符合手機瀏覽器規範）
-document.addEventListener('click', function initAudio() {
-  if (music.paused) {
-    music.play().then(() => {
-      musicBtn.classList.add('playing');
-    }).catch(() => {
-      // 若受限則等待使用者主動點擊按鈕
-    });
-  }
-  document.removeEventListener('click', initAudio);
-}, { once: true });
+});
 </script>
 <script src="gallery-list.js"></script>
 <script>
