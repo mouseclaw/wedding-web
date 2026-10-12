@@ -558,15 +558,15 @@
     margin-top: 32px;
     padding: 15px 46px;
     border: 1px solid var(--gold);
-    color: var(--gold);
+    color:var(--white);
     text-decoration:none;
     font-family: var(--serif-en);
     font-size: 14px;
     letter-spacing: 0.22em;
     transition: background .2s ease, color .2s ease;
-    background: var(--cream);
+    background: var(--gold)
   }
-  .rsvp-btn:hover{ background: var(--gold); color:var(--white); }
+  .rsvp-btn:hover{ opacity: 0.8; }
  
 
   /* =========================================================
@@ -616,12 +616,54 @@
     letter-spacing: 0.2em;
     color: var(--ink-faint);
   }
+  .music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.music-btn:active {
+  transform: scale(0.92);
+}
+
+/* 播放時音樂圖示緩慢旋轉 */
+.music-btn.playing #music-icon {
+  display: inline-block;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 </style>
 </head>
 <body>
 <div class="page">
+  <!-- 音樂控制按鈕 -->
+  <button id="music-toggle" class="music-btn" aria-label="切換背景音樂">
+    <span id="music-icon">🎵</span>
+  </button>
 
+  <!-- 背景音樂元件 (請將 bgm.mp3 替換成你的音樂檔案路徑) -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="bgm.mp3" type="audio/mpeg">
+  </audio>
   <!-- ============ 1. 封面 & 標題 ============ -->
   <section class="cover">
     <p class="eyebrow">INVITATION</p>
@@ -741,40 +783,22 @@
   <div class="divider"><span class="mark"></span></div>
 
   <!-- ============ 5. 婚紗照輪播 ============ -->
-  <section class="gallery">
+    <section class="gallery">
     <p class="section-title">婚紗記憶<span class="en">OUR MOMENTS</span></p>
-    <div class="gallery-track" id="galleryTrack">
-      <div class="photo-slot" data-label="PHOTO 01">
-        <!-- <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg> -->
-        <img src="001.jpg" width="100%" alt="">
-      </div>
-      <div class="photo-slot" data-label="PHOTO 02">
-        <img src="002.jpg" width="100%" alt="">
-        <!-- <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg> -->
-      </div>
-      <div class="photo-slot" data-label="PHOTO 03">
-        <img src="003.jpg" width="100%" alt="">
-        <!-- <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg> -->
-      </div>
-      <div class="photo-slot" data-label="後續會持續上傳照片哦!">
-        <!-- <img src="004.jpg" width="100%" alt=""> -->
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.1"><rect x="10" y="16" width="44" height="32" rx="1"/><circle cx="32" cy="32" r="8"/><path d="M24 16l3-5h10l3 5"/></svg>
-      </div>
-    </div>
+    <!-- 圖片由 gallery-list.js（執行 build_gallery.py 產生）自動讀入 img/ 資料夾 -->
+    <div class="gallery-track" id="galleryTrack"></div>
     <div class="gallery-nav">
       <button class="arrow" id="galleryPrev" aria-label="上一張">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <span class="gallery-count"><span id="galleryCurrent">1</span>/3</span>
-      <div class="gallery-dots" id="galleryDots">
-        <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-      </div>
+      <span class="gallery-count"><span id="galleryCurrent">1</span>/<span id="galleryTotal">1</span></span>
+      <div class="gallery-dots" id="galleryDots"></div>
       <button class="arrow" id="galleryNext" aria-label="下一張">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
       </button>
     </div>
   </section>
-
+ 
   <div class="divider"><span class="mark"></span></div>
 
   <!-- ============ 6. 婚禮影片 ============ -->
@@ -812,7 +836,8 @@
       <p class="venue-address">苗栗縣竹南鎮新南里公園路106號</p>
     </div>
     <div class="venue-transport">
-      <p><span class="k">自行開車　</span>國道1號竹南交流道下，往竹南市區方向約10分鐘車程，飯店備有停車場。</p>
+      <p><span class="k">自行開車　</span>國道1號竹南交流道下，往竹南市區方向約10分鐘車程，飯店備有停車場，<a href="https://maps.app.goo.gl/WC4vSUo4iSN5yGEY8" target="_blank" rel="noopener noreferrer">導航到飯店</a>。</p>
+      <p>如果飯店停車車滿，可停在附近「<a href="https://maps.app.goo.gl/96otUbrKjsbjogcy9" target="_blank" rel="noopener noreferrer">竹南公有停車場</a>」。</p>
       <p><span class="k">大眾運輸　</span>搭乘台鐵至竹南車站，轉乘計程車約10分鐘可抵達。</p>
     </div>
   </section>
@@ -845,30 +870,97 @@
 </div>
 
 <script>
-  // ---- 婚紗照輪播：拖曳/滑動同步點點與計數 ----
+const music = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-toggle');
+
+// 點擊按鈕切換播放 / 暫停
+musicBtn.addEventListener('click', (e) => {
+  e.stopPropagation(); // 避免觸發全域點擊事件
+  toggleMusic();
+});
+
+function toggleMusic() {
+  if (music.paused) {
+    music.play();
+    musicBtn.classList.add('playing');
+  } else {
+    music.pause();
+    musicBtn.classList.remove('playing');
+  }
+}
+
+// 首次點擊頁面任意區域時嘗試播放音樂（符合手機瀏覽器規範）
+document.addEventListener('click', function initAudio() {
+  if (music.paused) {
+    music.play().then(() => {
+      musicBtn.classList.add('playing');
+    }).catch(() => {
+      // 若受限則等待使用者主動點擊按鈕
+    });
+  }
+  document.removeEventListener('click', initAudio);
+}, { once: true });
+</script>
+<script src="gallery-list.js"></script>
+<script>
+  // ---- 婚紗照輪播：依 img/ 資料夾的圖片清單自動產生，並同步點點與計數 ----
   (function(){
     const track = document.getElementById('galleryTrack');
-    const slides = track.querySelectorAll('.photo-slot');
-    const dots = document.querySelectorAll('#galleryDots .dot');
+    const dotsBox = document.getElementById('galleryDots');
     const currentEl = document.getElementById('galleryCurrent');
+    const totalEl = document.getElementById('galleryTotal');
     const prevBtn = document.getElementById('galleryPrev');
     const nextBtn = document.getElementById('galleryNext');
-    let index = 0;
+ 
+    // 清單不存在或是空的時候，顯示一張佔位圖，避免區塊整個空白
+    const images = (window.GALLERY_IMAGES && window.GALLERY_IMAGES.length)
+      ? window.GALLERY_IMAGES
+      : [null];
+ 
+    images.forEach((src, n) => {
+    const slide = document.createElement('div');
+    slide.className = 'photo-slot';
+    if (src) {
+      slide.classList.add('has-img');
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = '婚紗照 ' + (n + 1);
+      img.loading = n === 0 ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      img.style.width = '100%'; // 新增此行
+      slide.appendChild(img);
+    } else {
+      slide.dataset.label = 'PHOTO';
+    }
+    track.appendChild(slide);
 
+    const dot = document.createElement('span');
+    dot.className = 'dot' + (n === 0 ? ' active' : '');
+    dotsBox.appendChild(dot);
+  });
+ 
+    // 照片很多時，點點會太擠，改成只顯示計數
+    if (images.length > 12) dotsBox.style.display = 'none';
+    totalEl.textContent = images.length;
+ 
+    const slides = track.querySelectorAll('.photo-slot');
+    const dots = dotsBox.querySelectorAll('.dot');
+    let index = 0;
+ 
     function update(i){
       index = Math.max(0, Math.min(slides.length - 1, i));
       dots.forEach((d, n) => d.classList.toggle('active', n === index));
       currentEl.textContent = index + 1;
     }
-
+ 
     function scrollTo(i){
       const slide = slides[i];
       if (slide) track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
     }
-
+ 
     prevBtn.addEventListener('click', () => { update(index - 1); scrollTo(index); });
     nextBtn.addEventListener('click', () => { update(index + 1); scrollTo(index); });
-
+ 
     let ticking = false;
     track.addEventListener('scroll', () => {
       if (ticking) return;
